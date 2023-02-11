@@ -6,7 +6,7 @@ pub trait LineStringValidation {
 
 impl LineStringValidation for LineString {
     fn is_valid(&self) -> bool {
-        if !self.points().all(|p| p.is_valid()) {
+        if self.points().any(|p| !p.is_valid()) {
             return false;
         } else {
             // Line string must have 2 or more points
@@ -46,6 +46,11 @@ mod tests {
     #[test]
     fn not_enoug_points() {
         let line_string = LineString::new(vec![coord! { x: 0., y: 0. }]);
+        assert_eq!(line_string.is_valid(), false)
+    }
+    #[test]
+    fn zero_points() {
+        let line_string = LineString::new(vec![]);
         assert_eq!(line_string.is_valid(), false)
     }
 }
