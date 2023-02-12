@@ -1,10 +1,21 @@
-use super::point::PointValidation;
+use super::point::PointValidationExt;
 use geo_types::LineString;
-pub trait LineStringValidation {
+pub trait LineStringValidationExt {
+    fn check_point_ring_size(&self) -> bool;
     fn is_valid(&self) -> bool;
 }
 
-impl LineStringValidation for LineString {
+impl LineStringValidationExt for LineString {
+    fn check_point_ring_size(&self) -> bool {
+        let len = self.points().len();
+        if len == 0 {
+            return true;
+        } else if len < 4 {
+            return false;
+        } else {
+            return true;
+        }
+    }
     fn is_valid(&self) -> bool {
         if !self.points().all(|p| p.is_valid()) {
             return false;

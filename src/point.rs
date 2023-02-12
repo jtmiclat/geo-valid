@@ -1,9 +1,9 @@
 use geo_types::Point;
-pub trait PointValidation {
+pub trait PointValidationExt {
     fn is_valid(&self) -> bool;
 }
 
-impl PointValidation for Point {
+impl PointValidationExt for Point {
     fn is_valid(&self) -> bool {
         if self.0.x.is_finite() && self.0.y.is_finite() {
             return true;

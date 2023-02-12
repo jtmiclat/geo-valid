@@ -1,10 +1,10 @@
 use geo_types::Coord;
 
-pub trait CoordValidation {
+pub trait CoordValidationExt {
     fn is_valid(&self) -> bool;
 }
 
-impl CoordValidation for Coord {
+impl CoordValidationExt for Coord {
     fn is_valid(&self) -> bool {
         if self.x.is_finite() && self.y.is_finite() {
             return true;
