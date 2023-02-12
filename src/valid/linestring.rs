@@ -6,7 +6,7 @@ pub trait LineStringValidation {
 
 impl LineStringValidation for LineString {
     fn is_valid(&self) -> bool {
-        if self.points().any(|p| !p.is_valid()) {
+        if !self.points().all(|p| p.is_valid()) {
             return false;
         } else {
             // Line string must have 2 or more points
