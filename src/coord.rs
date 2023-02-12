@@ -27,7 +27,7 @@ mod tests {
     fn invalid_coord() {
         let coord = Coord::from((f64::INFINITY, 1.));
         assert_eq!(coord.is_valid(), false);
-        let coord = Coord::from((1., f64::INFINITY));
+        let coord = Coord::from((1., f64::NEG_INFINITY));
         assert_eq!(coord.is_valid(), false);
         let coord = Coord::from((f64::INFINITY, f64::INFINITY));
         assert_eq!(coord.is_valid(), false);

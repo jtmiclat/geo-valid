@@ -25,7 +25,7 @@ mod tests {
     fn invalid_point() {
         let point = Point::new(f64::INFINITY, 1.);
         assert_eq!(point.is_valid(), false);
-        let point = Point::new(1., f64::INFINITY);
+        let point = Point::new(1., f64::NEG_INFINITY);
         assert_eq!(point.is_valid(), false);
         let point = Point::new(f64::INFINITY, f64::INFINITY);
         assert_eq!(point.is_valid(), false);
