@@ -47,6 +47,9 @@ impl PolygonValidationExt for Polygon {
         if !self.rings_closed() {
             return false;
         };
+        if !self.rings_size() {
+            return false;
+        };
         return true;
     }
 }
