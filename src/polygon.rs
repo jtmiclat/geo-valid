@@ -1,4 +1,4 @@
-use geo_types::Polygon;
+use geo_types::{Point, Polygon};
 
 use super::linestring::LineStringValidationExt;
 
@@ -7,8 +7,12 @@ pub trait PolygonValidationExt {
     fn rings_closed(&self) -> bool;
     fn rings_size(&self) -> bool;
     fn is_valid(&self) -> bool;
+    fn get_self_intersection(&self) -> Option<Point>;
 }
 impl PolygonValidationExt for Polygon {
+    fn get_self_intersection(&self) -> Option<Point> {
+        None
+    }
     fn all_points_are_valid(&self) -> bool {
         if !self.exterior().is_valid() {
             return false;
@@ -62,5 +66,13 @@ mod tests {
     fn all_points_are_valid() {
         let polygon = Polygon::new(LineString::from(vec![(0., 0.), (1., 1.), (1., 0.)]), vec![]);
         assert_eq!(polygon.is_valid(), true)
+    }
+    #[test]
+    fn self_intersecting_polygon() {
+        let polygon = Polygon::new(
+            LineString::from(vec![(0., 0.), (2., 2.), (2., 0.), (0., 2.)]),
+            vec![],
+        );
+        assert_eq!(polygon.get_self_intersection(), Some(Point::new(1.0, 1.0)))
     }
 }
