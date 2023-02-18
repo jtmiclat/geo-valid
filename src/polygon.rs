@@ -90,6 +90,9 @@ impl PolygonValidationExt for Polygon {
         if !self.rings_size() {
             return false;
         };
+        if self.get_self_intersection() != None {
+            return false;
+        };
         return true;
     }
 }
@@ -110,6 +113,7 @@ mod tests {
             LineString::from(vec![(0., 0.), (2., 2.), (2., 0.), (0., 2.)]),
             vec![],
         );
-        assert_eq!(polygon.get_self_intersection(), Some(coord! {x:1.0, y:1.0}))
+        assert_eq!(polygon.get_self_intersection(), Some(coord! {x:1.0, y:1.0}));
+        assert_eq!(polygon.is_valid(), false);
     }
 }
