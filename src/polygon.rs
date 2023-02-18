@@ -28,6 +28,8 @@ pub trait PolygonValidationExt {
     fn get_self_intersection(&self) -> Option<Coord>;
 }
 impl PolygonValidationExt for Polygon {
+    /// Returns the first coord that self intersects.
+    /// Does not consider if entire line intersects
     fn get_self_intersection(&self) -> Option<Coord> {
         let exterior = self.exterior();
         let lines: Vec<Line> = exterior.lines().collect();
