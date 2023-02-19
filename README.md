@@ -7,30 +7,30 @@ A pure rust module for validating geometries. Inspired by [Geos Geometry Validat
 use geo_types::Point;
 use geo_valid::PointValidationExt;
 
-let is_valid = Point(.1, .2).is_valid();
+let is_valid = Point(1., 2.).is_valid();
 ```
 ## Notes:
 ### API Design
-Currently, I've decided to use Trait Extension for implemnting the validation. This is was to mimic the python library shapley API.
+Currently, I've decided to use Trait Extensions for implementing the validation. This is was to mimic the shapley's validation api.
 
 In shapely
 ```python
 from shapely import Point
 
-Point(1, 1).is_valid == True
+Point(1, 2).is_valid == True
 ```
 In geo-valid
 ```rust
 use geo_types::Point;
 use geo_valid::PointValidationExt;
 
-let is_valid = Point(.1, .2).is_valid();
+let is_valid: bool = Point(1, 2).is_valid();
 ```
-but it might be better to use custom structs instead to be able to contruct more robust error messages. For example
+but it might be better to use custom structs instead to be able to more robust error messages. For example
 ```rust
 use geo_types::Point;
 use geo_valid::{validate, Validation};
-let validation: Validation = validate(Point(.1, .2));
+let validation: Validation = validate(Point(1., 2.));
 
 validation.is_valid() == true;
 validation.errors(); /// Returns a vector of string errors
