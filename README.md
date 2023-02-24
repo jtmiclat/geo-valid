@@ -37,7 +37,7 @@ cargo tarpaulin
 ```
 
 ## TODO
-- [ ] Improve perfomance of self intersection
+- [ ] Check if interiors are within each other
 - [ ] Support MultiPolygon, MultiLineString, MultiPoint, and Geometry Collection
 - [ ] Support early exit once a single validation check fails
-- [ ] Investiage Line, Rect. and Triangle
+- [ ] Investiage Line, Rect,  and Triangle

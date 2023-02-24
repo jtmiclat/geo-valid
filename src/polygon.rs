@@ -71,15 +71,10 @@ fn validate_self_intersection(polygon: &Polygon) -> Validation {
     for interior in polygon.interiors() {
         lines.extend(interior.lines())
     }
-
-    // TODO: This can be optimized better. currently this duplicate comparisons
-    for line in lines.clone() {
-        for line2 in lines.clone() {
-            //skip if comparing the same part
-            if line == line2 {
-                continue;
-            }
-            if let Some(intersection) = line_intersection(line, line2) {
+    // Use index of the line to determine which parts we havent compared to yet
+    for (index, line) in lines.clone().iter().enumerate() {
+        for line2 in &lines.clone()[index + 1..] {
+            if let Some(intersection) = line_intersection(*line, *line2) {
                 let intersection_message = match intersection {
                     LineIntersection::Collinear { intersection } => {
                         Some(format!("Found collinear at {:?}", intersection))
@@ -180,7 +175,7 @@ mod tests {
         let polygon = Polygon::new(exterior, interiors);
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, false);
-        //assert_eq!(validation.errors.len(), 1);
+        assert_eq!(validation.errors.len(), 1);
     }
     #[test]
     fn self_intersecting_simple_polygon_spike() {
@@ -189,7 +184,7 @@ mod tests {
         let polygon = Polygon::new(exterior, interiors);
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, false);
-        //assert_eq!(validation.errors.len(), 1);
+        assert_eq!(validation.errors.len(), 1);
     }
     #[test]
     fn self_intersecting_with_interrrior() {
@@ -199,6 +194,6 @@ mod tests {
         let polygon = Polygon::new(exterior, interiors);
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, false);
-        //assert_eq!(validation.errors.len(), 2);
+        assert_eq!(validation.errors.len(), 2);
     }
 }
