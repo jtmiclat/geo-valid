@@ -1,4 +1,4 @@
-use super::validator::Validation;
+use super::validation::Validation;
 use geo_types::Coord;
 
 pub fn validate_coord(coord: Coord) -> Validation {

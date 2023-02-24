@@ -2,7 +2,7 @@ use super::point::validate_point;
 use geo::coords_iter::CoordsIter;
 use geo_types::LineString;
 
-use super::validator::Validation;
+use super::validation::Validation;
 
 pub fn validate_linestring_points(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];

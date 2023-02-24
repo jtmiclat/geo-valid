@@ -1,4 +1,4 @@
-use super::validator::Validation;
+use super::validation::Validation;
 use geo_types::Point;
 
 pub fn validate_point(point: Point) -> Validation {

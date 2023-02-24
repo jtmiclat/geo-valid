@@ -4,7 +4,7 @@ use geo::{Line, LineIntersection, Polygon};
 
 use crate::linestring::validate_linestring_points;
 
-use super::validator::Validation;
+use super::validation::Validation;
 
 fn validate_polygon_points(polygon: &Polygon) -> Validation {
     let mut errors: Vec<String> = vec![];
