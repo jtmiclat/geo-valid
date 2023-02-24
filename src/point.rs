@@ -3,19 +3,14 @@ use geo_types::Point;
 
 pub fn validate_point(point: Point) -> Validation {
     let mut errors: Vec<String> = vec![];
-    if point.x().is_finite() && point.y().is_finite() {
-        return Validation {
-            is_valid: true,
-            errors: errors,
-        };
-    } else {
+    if !(point.x().is_finite() && point.y().is_finite()) {
         let error_message = format!("Coordinates of {:?} are not finite", point);
         errors.push(error_message);
-        return Validation {
-            is_valid: false,
-            errors: errors,
-        };
     }
+    return Validation {
+        is_valid: errors.len() == 0,
+        errors: errors,
+    };
 }
 
 #[cfg(test)]

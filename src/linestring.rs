@@ -1,10 +1,10 @@
-use geo_types::LineString;
-
 use super::point::validate_point;
+use geo::coords_iter::CoordsIter;
+use geo_types::LineString;
 
 use super::validator::Validation;
 
-fn validate_linestring_points(line: &LineString) -> Validation {
+pub fn validate_linestring_points(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
     for point in line.points() {
         let validation = validate_point(point);
@@ -20,7 +20,7 @@ fn validate_linestring_points(line: &LineString) -> Validation {
 
 fn validate_linestring_length(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
-    let length = line.points().len();
+    let length = line.coords_count();
     if length == 1 {
         let error_message = format!(
             "Linestring {:?} should be empty or contain 2 or more coords",
@@ -62,7 +62,7 @@ mod tests {
         assert_eq!(validation.errors.len(), 0);
     }
     #[test]
-    fn one_points_are_invalid() {
+    fn one_point_is_invalid() {
         let line_string = LineString::new(vec![
             coord! { x: 0., y: 0. },
             coord! { x: 10., y: f64::INFINITY},
