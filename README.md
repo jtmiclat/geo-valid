@@ -40,3 +40,4 @@ cargo tarpaulin
 - [ ] Improve perfomance of self intersection
 - [ ] Support MultiPolygon, MultiLineString, MultiPoint, and Geometry Collection
 - [ ] Support early exit once a single validation check fails
+- [ ] Investiage Line, Rect. and Triangle
