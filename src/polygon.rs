@@ -65,8 +65,12 @@ fn validate_polygon_rings_closed(polygon: &Polygon) -> Validation {
 fn validate_self_intersection(polygon: &Polygon) -> Validation {
     let mut errors: Vec<String> = vec![];
     let exterior = polygon.exterior();
-    // TODO include interior lines as well
-    let lines: Vec<Line> = exterior.lines().collect();
+    let mut lines: Vec<Line> = vec![];
+
+    lines.extend(exterior.lines());
+    for interior in polygon.interiors() {
+        lines.extend(interior.lines())
+    }
 
     // TODO: This can be optimized better. currently this duplicate comparisons
     for line in lines.clone() {
@@ -186,5 +190,15 @@ mod tests {
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, false);
         //assert_eq!(validation.errors.len(), 1);
+    }
+    #[test]
+    fn self_intersecting_with_interrrior() {
+        let exterior = LineString::from(vec![(0., 0.), (2., 0.), (2., 2.), (0., 2.)]);
+        let interior_1 = LineString::from(vec![(1., 1.), (2.5, 1.5), (1.5, 1.75)]);
+        let interiors = vec![interior_1];
+        let polygon = Polygon::new(exterior, interiors);
+        let validation = validate_polygon(polygon);
+        assert_eq!(validation.is_valid, false);
+        //assert_eq!(validation.errors.len(), 2);
     }
 }
