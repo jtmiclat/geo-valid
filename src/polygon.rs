@@ -2,18 +2,18 @@ use geo::coords_iter::CoordsIter;
 use geo::line_intersection::line_intersection;
 use geo::{Line, LineIntersection, Polygon};
 
-use crate::linestring::validate_linestring_points;
+use super::line_string::validate_line_string_points;
 
 use super::validation::Validation;
 
 fn validate_polygon_points(polygon: &Polygon) -> Validation {
     let mut errors: Vec<String> = vec![];
-    let exterior_validation = validate_linestring_points(polygon.exterior());
+    let exterior_validation = validate_line_string_points(polygon.exterior());
     if exterior_validation.is_valid == false {
         errors.extend(exterior_validation.errors)
     }
     for interior in polygon.interiors() {
-        let interior_validation = validate_linestring_points(interior);
+        let interior_validation = validate_line_string_points(interior);
         if interior_validation.is_valid == false {
             errors.extend(interior_validation.errors)
         }
@@ -105,7 +105,7 @@ pub fn validate_polygon(polygon: Polygon) -> Validation {
         errors.extend(points_validation.errors)
     }
     // This validation might not be needed because generating polygons
-    // with the geo library automatically closes linestrings if not empty
+    // with the geo library automatically closes line_strings if not empty
     let ring_closed_validation = validate_polygon_rings_closed(&polygon);
     if ring_closed_validation.is_valid == false {
         errors.extend(ring_closed_validation.errors)

@@ -4,7 +4,7 @@ use geo_types::LineString;
 
 use super::validation::Validation;
 
-pub fn validate_linestring_points(line: &LineString) -> Validation {
+pub fn validate_line_string_points(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
     for point in line.points() {
         let validation = validate_point(point);
@@ -18,7 +18,7 @@ pub fn validate_linestring_points(line: &LineString) -> Validation {
     };
 }
 
-fn validate_linestring_length(line: &LineString) -> Validation {
+fn validate_line_string_length(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
     let length = line.coords_count();
     if length == 1 {
@@ -33,13 +33,13 @@ fn validate_linestring_length(line: &LineString) -> Validation {
         errors: errors,
     };
 }
-pub fn validate_linestring(line: LineString) -> Validation {
+pub fn validate_line_string(line: LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
-    let points_validation = validate_linestring_points(&line);
+    let points_validation = validate_line_string_points(&line);
     if points_validation.is_valid == false {
         errors.extend(points_validation.errors)
     }
-    let length_validation = validate_linestring_length(&line);
+    let length_validation = validate_line_string_length(&line);
     if length_validation.is_valid == false {
         errors.extend(length_validation.errors)
     }
@@ -57,7 +57,7 @@ mod tests {
     #[test]
     fn all_points_are_valid() {
         let line_string = LineString::new(vec![coord! { x: 0., y: 0. }, coord! { x: 10., y: 0. }]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, true);
         assert_eq!(validation.errors.len(), 0);
     }
@@ -67,7 +67,7 @@ mod tests {
             coord! { x: 0., y: 0. },
             coord! { x: 10., y: f64::INFINITY},
         ]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, false);
         assert_eq!(validation.errors.len(), 1);
     }
@@ -80,14 +80,14 @@ mod tests {
             coord! { x:f64::NEG_INFINITY, y: 0.},
             coord! { x:f64::NAN, y: 0.},
         ]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, false);
         assert_eq!(validation.errors.len(), 3);
     }
     #[test]
     fn zero_points() {
         let line_string = LineString::new(vec![]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, true);
         assert_eq!(validation.errors.len(), 0);
     }
@@ -98,14 +98,14 @@ mod tests {
             coord! { x: 10., y: 0. },
             coord! { x: 10., y: 10. },
         ]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, true);
         assert_eq!(validation.errors.len(), 0);
     }
     #[test]
     fn not_enough_points() {
         let line_string = LineString::new(vec![coord! { x: 0., y: 0. }]);
-        let validation = validate_linestring(line_string);
+        let validation = validate_line_string(line_string);
         assert_eq!(validation.is_valid, false);
         assert_eq!(validation.errors.len(), 1);
     }
