@@ -21,3 +21,22 @@ let validaiton: Validaiton = validate(self_intersecting_polygon);
 validation.is_valid;
 // false
 ```
+
+## Dev Setup
+### Installing
+```
+cargo install
+```
+### Run tests
+```
+cargo test --lib
+```
+For test coverage
+```
+cargo tarpaulin
+```
+
+## TODO
+- [ ] Improve perfomance of self intersection
+- [ ] Support MultiPolygon, MultiLineString, MultiPoint, and Geometry Collection
+- [ ] Support early exit once a single validation check fails

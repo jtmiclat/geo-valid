@@ -130,6 +130,7 @@ mod tests {
     use super::*;
     // use geo::coord;
     use geo_types::LineString;
+    use std::f64;
     #[test]
     fn simple_polygon() {
         let exterior = LineString::from(vec![(0., 0.), (1., 1.), (1., 0.)]);
@@ -138,6 +139,15 @@ mod tests {
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, true);
         assert_eq!(validation.errors.len(), 0);
+    }
+    #[test]
+    fn invalid_points() {
+        let exterior = LineString::from(vec![(0., f64::NAN), (1., 1.), (1., 0.)]);
+        let interiors = vec![];
+        let polygon = Polygon::new(exterior, interiors);
+        let validation = validate_polygon(polygon);
+        assert_eq!(validation.is_valid, false);
+        assert_eq!(validation.errors.len(), 3);
     }
     #[test]
     fn invalid_exterior_ring_length() {
