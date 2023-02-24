@@ -38,4 +38,4 @@ cargo tarpaulin
 
 ## TODO
 - [ ] Support early exit once a single validation check fails
-- [ ] Investigate if this geo-valid will support Line, Rect, and Triangle
+- [ ] Investigate if geo-valid will support Line, Rect, and Triangle
