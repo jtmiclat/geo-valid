@@ -1,5 +1,5 @@
 #[allow(unused_imports)]
-use geometry_collection::validate_geometry as validate;
+pub use geometry_collection::validate_geometry as validate;
 
 pub mod coord;
 pub mod geometry_collection;
