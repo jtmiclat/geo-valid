@@ -1,4 +1,3 @@
-#[allow(unused_imports)]
 pub use geometry_collection::validate_geometry as validate;
 
 pub mod coord;
