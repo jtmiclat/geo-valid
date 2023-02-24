@@ -27,7 +27,7 @@ validation.is_valid;
 ```
 cargo install
 ```
-### Run tests
+##TERun tests
 ```
 cargo test --lib
 ```
@@ -37,6 +37,5 @@ cargo tarpaulin
 ```
 
 ## TODO
-- [ ] Check if interiors are within each other for polygons
 - [ ] Support early exit once a single validation check fails
 - [ ] Investigate if this geo-valid will support Line, Rect, and Triangle

@@ -1,3 +1,4 @@
+use geo::algorithm::Contains;
 use geo::coords_iter::CoordsIter;
 use geo::line_intersection::line_intersection;
 use geo::{Line, LineIntersection, Polygon};
@@ -62,6 +63,33 @@ fn validate_polygon_rings_closed(polygon: &Polygon) -> Validation {
         errors: errors,
     };
 }
+
+fn validate_interiors_are_not_within(polygon: &Polygon) -> Validation {
+    let mut errors: Vec<String> = vec![];
+    let interiors = polygon.interiors();
+    for interior in interiors {
+        let polygon = Polygon::new(interior.clone(), vec![]);
+        for interior2 in interiors {
+            // dont compare exactly the same interiors
+            if interior == interior2 {
+                continue;
+            }
+            let polygon2 = Polygon::new(interior2.clone(), vec![]);
+            if polygon.contains(&polygon2) {
+                let error_message = format!(
+                    "Interior ring {:?} is contains another interior ring {:?}",
+                    interior, interior2
+                );
+                errors.push(error_message);
+            }
+        }
+    }
+    return Validation {
+        is_valid: errors.len() == 0,
+        errors: errors,
+    };
+}
+
 fn validate_self_intersection(polygon: &Polygon) -> Validation {
     let mut errors: Vec<String> = vec![];
     let exterior = polygon.exterior();
@@ -117,6 +145,10 @@ pub fn validate_polygon(polygon: Polygon) -> Validation {
     let self_intersection_validation = validate_self_intersection(&polygon);
     if self_intersection_validation.is_valid == false {
         errors.extend(self_intersection_validation.errors)
+    }
+    let interior_within_validation = validate_interiors_are_not_within(&polygon);
+    if interior_within_validation.is_valid == false {
+        errors.extend(interior_within_validation.errors)
     }
     return Validation {
         is_valid: errors.len() == 0,
@@ -187,7 +219,7 @@ mod tests {
         assert_eq!(validation.errors.len(), 1);
     }
     #[test]
-    fn self_intersecting_with_interrrior() {
+    fn self_intersecting_with_interrior() {
         let exterior = LineString::from(vec![(0., 0.), (2., 0.), (2., 2.), (0., 2.)]);
         let interior_1 = LineString::from(vec![(1., 1.), (2.5, 1.5), (1.5, 1.75)]);
         let interiors = vec![interior_1];
@@ -195,5 +227,16 @@ mod tests {
         let validation = validate_polygon(polygon);
         assert_eq!(validation.is_valid, false);
         assert_eq!(validation.errors.len(), 2);
+    }
+    #[test]
+    fn interior_rings_within() {
+        let exterior = LineString::from(vec![(-10., -10.), (10., -10.), (10., 10.), (-10., 10.)]);
+        let interior_1 = LineString::from(vec![(5., 5.), (-5., 5.), (-5., -5.), (5., -5.)]);
+        let interior_2 = LineString::from(vec![(2., 2.), (-2., 2.), (-2., -2.), (2., -2.)]);
+        let interiors = vec![interior_1, interior_2];
+        let polygon = Polygon::new(exterior, interiors);
+        let validation = validate_polygon(polygon);
+        assert_eq!(validation.is_valid, false);
+        assert_eq!(validation.errors.len(), 1);
     }
 }
