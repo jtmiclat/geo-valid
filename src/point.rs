@@ -42,4 +42,11 @@ mod tests {
         assert_eq!(validation.is_valid, false);
         assert_eq!(validation.errors.len(), 1);
     }
+    #[test]
+    fn invalid_point_nan() {
+        let point = Point::new(1., f64::NAN);
+        let validation = validate_point(point);
+        assert_eq!(validation.is_valid, false);
+        assert_eq!(validation.errors.len(), 1);
+    }
 }
