@@ -9,7 +9,8 @@ pub fn validate_point(point: Point) -> Validation {
             errors: errors,
         };
     } else {
-        errors.push(String::from("Coordinates are infinite"));
+        let error_message = format!("Coordinates of {:?} are not finite", point);
+        errors.push(error_message);
         return Validation {
             is_valid: false,
             errors: errors,

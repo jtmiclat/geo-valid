@@ -22,9 +22,11 @@ fn validate_linestring_length(line: &LineString) -> Validation {
     let mut errors: Vec<String> = vec![];
     let length = line.points().len();
     if length == 1 {
-        errors.push(String::from(
-            "Linestring should empty or contain 2 or more coords",
-        ));
+        let error_message = format!(
+            "Linestring {:?} should be empty or contain 2 or more coords",
+            line
+        );
+        errors.push(error_message)
     }
     return Validation {
         is_valid: errors.len() == 0,

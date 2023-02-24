@@ -3,18 +3,14 @@ use geo_types::Coord;
 
 pub fn validate_coord(coord: Coord) -> Validation {
     let mut errors: Vec<String> = vec![];
-    if coord.x.is_finite() && coord.y.is_finite() {
-        return Validation {
-            is_valid: true,
-            errors: errors,
-        };
-    } else {
-        errors.push(String::from("Coordinates are infinite"));
-        return Validation {
-            is_valid: false,
-            errors: errors,
-        };
+    if !(coord.x.is_finite() && coord.y.is_finite()) {
+        let error_message = format!("Coordinates of {:?} are not finite", coord);
+        errors.push(error_message);
     }
+    return Validation {
+        is_valid: errors.len() == 0,
+        errors: errors,
+    };
 }
 
 #[cfg(test)]
