@@ -39,4 +39,4 @@ cargo tarpaulin
 ## TODO
 - [ ] Check if interiors are within each other
 - [ ] Support early exit once a single validation check fails
-- [ ] Investiage Line, Rect,  and Triangle
+- [ ] Investigate if this geo-valid will support Line, Rect, and Triangle
