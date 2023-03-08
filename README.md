@@ -27,7 +27,7 @@ validation.is_valid;
 ```
 cargo install
 ```
-##TERun tests
+## Run tests
 ```
 cargo test --lib
 ```
@@ -37,5 +37,7 @@ cargo tarpaulin
 ```
 
 ## TODO
+- [ ] Add docs
+- [ ] Publish
 - [ ] Support early exit once a single validation check fails
 - [ ] Investigate if geo-valid will support Line, Rect, and Triangle
